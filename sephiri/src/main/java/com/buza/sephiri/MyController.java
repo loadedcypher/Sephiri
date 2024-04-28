@@ -38,6 +38,7 @@ public class MyController {
         return Secure.encryptFile(fileName, key);
     }
 
+    // API endpoint to just decrypt a file's contents given a key
     @GetMapping("/api/decryptFile")
     public String decryptFile(@RequestParam String fileName, @RequestParam int key) {
         return Secure.decryptFile(fileName, key);

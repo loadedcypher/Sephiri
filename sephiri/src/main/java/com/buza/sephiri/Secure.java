@@ -1,10 +1,8 @@
 package com.buza.sephiri;
 
 import java.io.BufferedReader;
-import java.io.BufferedWriter;
 import java.io.FileOutputStream;
 import java.io.FileReader;
-import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -99,8 +97,9 @@ public class Secure {
 
     // A method to write to file given some content.
     public static void writeFile(String fileName, String fileLocation, String fileContents) {
+        String finalLocation = fileLocation + fileName + ".txt";
         try {
-           FileOutputStream outputStream = new FileOutputStream(fileLocation);
+           FileOutputStream outputStream = new FileOutputStream(finalLocation);
 
            // Convert the text in the file into bytes
            byte[] contentBytes = fileContents.getBytes();
