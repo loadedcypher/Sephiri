@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:sephiri_frontend/functions/api_calls.dart';
 
 class EncryptString extends StatefulWidget {
   const EncryptString({super.key});
@@ -17,7 +18,7 @@ class _EncryptStringState extends State<EncryptString> {
   Widget build(BuildContext context) {
     return Column(
       children: [
-        // form filed
+        // Input field to enter the text to be encrypted
         TextFormField(
           controller: _textController,
           decoration: const InputDecoration(hintText: 'Enter text to encrypt'),
@@ -28,6 +29,7 @@ class _EncryptStringState extends State<EncryptString> {
             return null;
           },
         ),
+        // Input field to enter the encryption key.
         TextFormField(
           controller: _keyController,
           decoration: const InputDecoration(hintText: 'Enter encryption key'),
@@ -41,11 +43,12 @@ class _EncryptStringState extends State<EncryptString> {
         ElevatedButton(
           onPressed: () {
             if (_formKey.currentState!.validate()) {
-              // Add encryption logic here
-              setState(() {
-                _encryptedText = 'Encrypted text: ${_textController.text}';
+              setState(() async {
+                _encryptedText = await encryptString(
+                    _textController.text, int.parse(_keyController.text));
               });
             }
+            print(_encryptedText);
           },
           child: const Text('Encrypt'),
         ),
