@@ -96,39 +96,30 @@ public class Secure {
 
     }
 
-    // A method to encrypt a file with a given filename and encryption key.
-    public static void encryptFile(String filename, int key) throws IOException {
-        
-        try(BufferedReader br = new BufferedReader(new FileReader(filename));
-        BufferedWriter bw = new BufferedWriter(new FileWriter("encrypted " + filename + ".txt"));) {
-            String line;
-
-            // each time a line is read it gets encrypted.
-            while ((line = br.readLine()) != null) {
-                String encryptedLine = encrypt(line, key);
-                bw.write(encryptedLine);
-            }
-            br.close();
+    // A method to write to file given some contenst
+    public static void writeFile(String fileName, String fileContents) {
+        try(BufferedWriter bw = new BufferedWriter(new FileWriter(fileName));) {
+            bw.write(fileContents);
             bw.close();
+        }
+        catch(IOException e) {
+            System.out.println(e);
         }
     }
 
-    // A method to decrypt a file.
-
-    public static void decryptFile(String filename, int key) throws IOException {
+    // A method to encrypt a file with a given filename and encryption key.
+    public static String encryptFile(String filename, int key) {
+        String fileContents = readFile(filename);
         
-        try(BufferedReader br = new BufferedReader(new FileReader(filename));
-        BufferedWriter bw = new BufferedWriter(new FileWriter("encrypted " + filename + ".txt"));) {
-            String line;
-
-            // each time a line is read it gets decrypted.
-            while ((line = br.readLine()) != null) {
-                String decryptedLine = decrypt(line, key);
-                bw.write(decryptedLine);
-            }
-            br.close();
-            bw.close();
+        return encrypt(fileContents, key);
         }
+
+    // A method to decrypt a file given a filename and key.
+
+    public static String decryptFile(String filename, int key) {
+        String encryptedContents = readFile(filename);
+
+        return decrypt(encryptedContents, key);
     }
 
     // A method to decrypt a file using frequency analysis.
@@ -136,22 +127,15 @@ public class Secure {
     public static String analyse(String filename) throws IOException {
         // A map to store characters in the file and their frequencies
         Map<Character, Integer> frequencies = new HashMap<>();
-        StringBuffer cipherString = new StringBuffer();
+        String cipherString = readFile(filename);
         StringBuffer decryptedText = new StringBuffer();
     
-        // Read the contents of the file
-        try (BufferedReader br = new BufferedReader(new FileReader(filename))) {
-            String line;
-            // Add each line read to the cipher string
-            while ((line = br.readLine()) != null) {
-                cipherString.append(line);
-            }
-            // Remove non-alphabetical characters and convert uppercase letters to lowercase
-            String formattedText = cipherString.toString().replaceAll("[^a-zA-Z]", "").toLowerCase();
-            // Count the frequency of each letter and store them
-            for (char c : formattedText.toCharArray()) {
-                frequencies.put(c, frequencies.getOrDefault(c, 0) + 1);
-            }
+
+        // Remove non-alphabetical characters and convert uppercase letters to lowercase
+        String formattedText = cipherString.toString().replaceAll("[^a-zA-Z]", "").toLowerCase();
+        // Count the frequency of each letter and store them
+        for (char c : formattedText.toCharArray()) {
+            frequencies.put(c, frequencies.getOrDefault(c, 0) + 1);
         }
     
         // A list of the most frequently used letters in English
