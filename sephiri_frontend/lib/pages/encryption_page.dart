@@ -11,7 +11,7 @@ class EncryptionPage extends StatefulWidget {
 
 class _EncryptionPageState extends State<EncryptionPage> {
   final _formKey = GlobalKey<FormState>();
-  String _selectedOption = 'Encrypt String';
+  String _selectedOption = '';
 
   @override
   Widget build(BuildContext context) {
@@ -31,6 +31,10 @@ class _EncryptionPageState extends State<EncryptionPage> {
                   });
                 },
                 items: const [
+                  DropdownMenuItem(
+                    value: '',
+                    child: Text('What do you want to encrypt'),
+                  ),
                   DropdownMenuItem(
                     value: 'Encrypt String',
                     child: Text('Encrypt String'),
