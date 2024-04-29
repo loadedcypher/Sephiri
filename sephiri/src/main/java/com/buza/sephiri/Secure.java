@@ -99,7 +99,7 @@ public class Secure {
     public static void writeFile(String fileName, String fileLocation, String fileContents) {
         String finalLocation = fileLocation + fileName + ".txt";
         try {
-           FileOutputStream outputStream = new FileOutputStream(finalLocation);
+           FileOutputStream outputStream = new FileOutputStream(fileLocation);
 
            // Convert the text in the file into bytes
            byte[] contentBytes = fileContents.getBytes();
