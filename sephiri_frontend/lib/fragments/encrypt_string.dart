@@ -10,7 +10,6 @@ class EncryptString extends StatefulWidget {
 }
 
 class _EncryptStringState extends State<EncryptString> {
-  final _formKey = GlobalKey<FormState>();
   final _textController = TextEditingController();
   final _keyController = TextEditingController();
   String _encryptedText = '';
