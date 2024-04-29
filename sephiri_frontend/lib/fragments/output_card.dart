@@ -1,5 +1,7 @@
 import 'package:clipboard/clipboard.dart';
 import 'package:flutter/material.dart';
+import 'package:sephiri_frontend/functions/utils.dart';
+import 'package:file_picker/file_picker.dart';
 
 class OutputCard extends StatefulWidget {
   final String outputText;
@@ -37,7 +39,20 @@ class _OutputCardState extends State<OutputCard> {
               FilledButton(
                   onPressed: () => copyText(widget.outputText),
                   child: const Text("Copy Text")),
-              FilledButton(onPressed: () {}, child: const Text("Write to file"))
+              FilledButton(
+                  onPressed: () async {
+                    String? result =
+                        await FilePicker.platform.getDirectoryPath();
+                    writeFile(result!, 'encrypted${DateTime.now()}.txt',
+                            widget.outputText)
+                        .then((value) {
+                      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+                        content: Text("File has been saved"),
+                        duration: Duration(seconds: 2),
+                      ));
+                    });
+                  },
+                  child: const Text("Write to file"))
             ],
           )
         ],

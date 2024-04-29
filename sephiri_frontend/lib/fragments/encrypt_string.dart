@@ -12,56 +12,71 @@ class EncryptString extends StatefulWidget {
 class _EncryptStringState extends State<EncryptString> {
   final _textController = TextEditingController();
   final _keyController = TextEditingController();
+  final _formKey = GlobalKey<FormState>();
   String _encryptedText = '';
-  String _text = '';
-  int _key = 0;
+  String _errorMessage = '';
 
   Future<void> encrypt(String text, int key) async {
-    String encryptedText = await encryptString(text, key);
-    setState(() {
-      _encryptedText = encryptedText;
-    });
+    try {
+      String encryptedText = await encryptString(text, key);
+      setState(() {
+        _encryptedText = encryptedText;
+        _errorMessage = '';
+      });
+    } catch (e) {
+      setState(() {
+        _errorMessage = 'Error encrypting text: $e';
+      });
+    }
   }
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      children: [
-        // Input field to enter the text to be encrypted
-        TextFormField(
-          controller: _textController,
-          decoration: const InputDecoration(hintText: 'Enter text to encrypt'),
-          onChanged: (value) {
-            _text = value;
-          },
-          validator: (value) {
-            if (value == null || value.isEmpty) {
-              return 'Please enter some text';
-            }
-            return null;
-          },
-        ),
-        // Input field to enter the encryption key.
-        TextFormField(
-          controller: _keyController,
-          decoration: const InputDecoration(hintText: 'Enter encryption key'),
-          onChanged: (value) {
-            _key = int.parse(value);
-          },
-          validator: (value) {
-            if (value == null || value.isEmpty) {
-              return 'Please enter an encryption key';
-            }
-            return null;
-          },
-        ),
-        ElevatedButton(
-          onPressed: () => encrypt(_text, _key),
-          child: const Text('Encrypt'),
-        ),
-
-        OutputCard(outputText: _encryptedText)
-      ],
+    return Form(
+      key: _formKey,
+      child: Column(
+        children: [
+          TextFormField(
+            controller: _textController,
+            decoration:
+                const InputDecoration(hintText: 'Enter text to encrypt'),
+            validator: (value) {
+              if (value == null || value.isEmpty) {
+                return 'Please enter some text';
+              }
+              return null;
+            },
+          ),
+          TextFormField(
+            controller: _keyController,
+            decoration: const InputDecoration(hintText: 'Enter encryption key'),
+            keyboardType: TextInputType.number,
+            validator: (value) {
+              if (value == null || value.isEmpty) {
+                return 'Please enter an encryption key';
+              }
+              return null;
+            },
+          ),
+          ElevatedButton(
+            onPressed: () {
+              if (_formKey.currentState!.validate()) {
+                encrypt(
+                  _textController.text,
+                  int.parse(_keyController.text),
+                );
+              }
+            },
+            child: const Text('Encrypt'),
+          ),
+          if (_errorMessage.isNotEmpty)
+            Text(
+              _errorMessage,
+              style: const TextStyle(color: Colors.red),
+            ),
+          OutputCard(outputText: _encryptedText)
+        ],
+      ),
     );
   }
 }

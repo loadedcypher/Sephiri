@@ -1,8 +1,9 @@
+import 'dart:developer';
 import 'dart:io';
 
-Future<String> readFile(String filePath) async {
+Future<String> readFile(String? filePath) async {
   try {
-    final file = File('path/to/file.txt');
+    final file = File(filePath!);
     final contents = await file.readAsString();
     return contents;
   } catch (e) {
@@ -10,12 +11,12 @@ Future<String> readFile(String filePath) async {
   }
 }
 
-Future<void> writeFile(String filePath, String contents) async {
+Future<void> writeFile(
+    String filePath, String filename, String contents) async {
   try {
-    final file = File(filePath);
+    final file = File('$filePath/$filename');
     await file.writeAsString(contents);
-    print('File written successfully!');
   } catch (e) {
-    print('Error writing file: $e');
+    log('$e');
   }
 }
