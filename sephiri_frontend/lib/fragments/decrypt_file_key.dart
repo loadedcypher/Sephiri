@@ -18,11 +18,11 @@ class _DecryptFileKeyState extends State<DecryptFileKey> {
   String _outputText = '';
   String _errorMessage = '';
 
-  Future<void> encrypt(String text, int key) async {
+  Future<void> decrypt(String text, int key) async {
     try {
-      String encryptedText = await encryptString(text, key);
+      String decryptedText = await decryptString(text, key);
       setState(() {
-        _outputText = encryptedText;
+        _outputText = decryptedText;
         _errorMessage = '';
       });
     } catch (e) {
@@ -91,7 +91,7 @@ class _DecryptFileKeyState extends State<DecryptFileKey> {
                     _errorMessage = 'Please read a file before decrypting';
                   });
                 } else {
-                  encrypt(_outputText, int.parse(_keyController.text));
+                  decrypt(_outputText, int.parse(_keyController.text));
                 }
               }
             },

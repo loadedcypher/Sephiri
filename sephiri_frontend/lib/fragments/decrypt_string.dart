@@ -16,9 +16,9 @@ class _DecryptStringState extends State<DecryptString> {
   String _encryptedText = '';
   String _errorMessage = '';
 
-  Future<void> encrypt(String text, int key) async {
+  Future<void> decrypt(String text, int key) async {
     try {
-      String encryptedText = await encryptString(text, key);
+      String encryptedText = await decryptString(text, key);
       setState(() {
         _encryptedText = encryptedText;
         _errorMessage = '';
@@ -61,7 +61,7 @@ class _DecryptStringState extends State<DecryptString> {
           ElevatedButton(
             onPressed: () {
               if (_formKey.currentState!.validate()) {
-                encrypt(
+                decrypt(
                   _textController.text,
                   int.parse(_keyController.text),
                 );
