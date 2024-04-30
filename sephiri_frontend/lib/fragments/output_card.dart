@@ -26,36 +26,47 @@ class _OutputCardState extends State<OutputCard> {
   @override
   Widget build(BuildContext context) {
     return Card(
-      child: Column(
-        children: [
-          const Row(
-            children: [Text("Output")],
-          ),
-          Row(
-            children: [Text(widget.outputText)],
-          ),
-          Row(
-            children: [
-              FilledButton(
-                  onPressed: () => copyText(widget.outputText),
-                  child: const Text("Copy Text")),
-              FilledButton(
-                  onPressed: () async {
-                    String? result =
-                        await FilePicker.platform.getDirectoryPath();
-                    writeFile(result!, 'encrypted${DateTime.now()}.txt',
-                            widget.outputText)
-                        .then((value) {
-                      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
-                        content: Text("File has been saved"),
-                        duration: Duration(seconds: 2),
-                      ));
-                    });
-                  },
-                  child: const Text("Write to file"))
-            ],
-          )
-        ],
+      child: Padding(
+        padding: const EdgeInsets.all(15.0),
+        child: Column(
+          children: [
+            const Row(
+              children: [Text("Output")],
+            ),
+            Row(
+              children: [Text(widget.outputText)],
+            ),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.end,
+              children: [
+                Padding(
+                  padding: const EdgeInsets.all(5.0),
+                  child: FilledButton(
+                      onPressed: () => copyText(widget.outputText),
+                      child: const Text("Copy Text")),
+                ),
+                Padding(
+                  padding: const EdgeInsets.all(5.0),
+                  child: FilledButton(
+                      onPressed: () async {
+                        String? result =
+                            await FilePicker.platform.getDirectoryPath();
+                        writeFile(result!, 'encrypted${DateTime.now()}.txt',
+                                widget.outputText)
+                            .then((value) {
+                          ScaffoldMessenger.of(context)
+                              .showSnackBar(const SnackBar(
+                            content: Text("File has been saved"),
+                            duration: Duration(seconds: 2),
+                          ));
+                        });
+                      },
+                      child: const Text("Write to file")),
+                )
+              ],
+            )
+          ],
+        ),
       ),
     );
   }
