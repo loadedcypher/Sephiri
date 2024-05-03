@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:sephiri_frontend/home.dart';
 import 'package:sephiri_frontend/pages/splash_screen.dart';
 
@@ -12,7 +13,9 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      theme: ThemeData.dark(useMaterial3: true),
+      theme: ThemeData(
+        textTheme: GoogleFonts.ubuntuTextTheme(),
+      ),
       debugShowCheckedModeBanner: false,
       initialRoute: '/',
       routes: {

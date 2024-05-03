@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:sephiri_frontend/fragments/output_card.dart';
 import 'package:sephiri_frontend/functions/api_calls.dart';
+import 'package:sephiri_frontend/styles/styles.dart';
 
 class EncryptString extends StatefulWidget {
   const EncryptString({super.key});
@@ -38,8 +39,7 @@ class _EncryptStringState extends State<EncryptString> {
         children: [
           TextFormField(
             controller: _textController,
-            decoration:
-                const InputDecoration(hintText: 'Enter text to encrypt'),
+            decoration: textFormfieldDecoration('Enter text to encrypt'),
             validator: (value) {
               if (value == null || value.isEmpty) {
                 return 'Please enter some text';
@@ -47,9 +47,12 @@ class _EncryptStringState extends State<EncryptString> {
               return null;
             },
           ),
+          const SizedBox(
+            height: 10.0,
+          ),
           TextFormField(
             controller: _keyController,
-            decoration: const InputDecoration(hintText: 'Enter encryption key'),
+            decoration: textFormfieldDecoration('Enter encryption key'),
             keyboardType: TextInputType.number,
             validator: (value) {
               if (value == null || value.isEmpty) {
@@ -57,6 +60,9 @@ class _EncryptStringState extends State<EncryptString> {
               }
               return null;
             },
+          ),
+          const SizedBox(
+            height: 10.0,
           ),
           ElevatedButton(
             onPressed: () {
@@ -69,11 +75,17 @@ class _EncryptStringState extends State<EncryptString> {
             },
             child: const Text('Encrypt'),
           ),
+          const SizedBox(
+            height: 16.0,
+          ),
           if (_errorMessage.isNotEmpty)
             Text(
               _errorMessage,
               style: const TextStyle(color: Colors.red),
             ),
+          const SizedBox(
+            height: 8.0,
+          ),
           OutputCard(outputText: _encryptedText)
         ],
       ),

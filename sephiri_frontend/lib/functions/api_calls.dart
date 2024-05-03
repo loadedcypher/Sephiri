@@ -1,6 +1,6 @@
-import 'package:http/http.dart' as http;
+import 'dart:convert';
 
-String endpoint = 'https://localhost:8080/api';
+import 'package:http/http.dart' as http;
 
 // A request to call the encrypt string function
 
@@ -31,7 +31,6 @@ Future<String> decryptString(String text, int decryptionKey) async {
   if (response.statusCode == 200) {
     // If the server did return a 200 OK response,
     // then parse the response body as a string.
-    print(response.body);
     return response.body;
   } else {
     // If the server did not return a 200 OK response,
@@ -40,17 +39,16 @@ Future<String> decryptString(String text, int decryptionKey) async {
   }
 }
 
-Future<String> decryptWithAnalysis(String text, int decryptionKey) async {
-  final url = Uri.parse(
-      'http://localhost:8080/api/decrypt_with_analysis?text=$text&key=$decryptionKey');
+Future<Map<String, dynamic>> decryptWithAnalysis(String filename) async {
+  final url = Uri.parse('http://localhost:8080/api/analyse?filename=$filename');
 
   final response = await http.get(url);
 
   if (response.statusCode == 200) {
     // If the server did return a 200 OK response,
-    // then parse the response body as a string.
-    print(response.body);
-    return response.body;
+    // then decode the body into a map using a json serializer.
+    print(json.decode(response.body));
+    return json.decode(response.body);
   } else {
     // If the server did not return a 200 OK response,
     // then throw an exception.

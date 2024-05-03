@@ -3,6 +3,8 @@ package com.buza.sephiri;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import java.util.Map;
+import java.util.HashMap;
 
 @RestController
 public class MyController {
@@ -18,32 +20,21 @@ public class MyController {
     public String decryptString(@RequestParam String encryptedText, @RequestParam int key) {
         return Secure.decrypt(encryptedText, key);
     }
+    //API endpoint to decrypt an encrypted text given a filename.
 
-    //API endpoint to read the contents of a file given a filename as a parameter.
-    @GetMapping("/api/readFile")
-    public String readFile(@RequestParam String fileName) {
-        return Secure.readFile(fileName);
+    @GetMapping("/api/analyse")
+    public Map<Character,Integer> frequencyAnalysis(@RequestParam String filename) {
+        Map<Character,Integer> analysis = new HashMap<>();
+
+        try {
+            analysis = Secure.analyse(filename);
+            
+        } catch (Exception e) {
+            System.out.println(e);
+        }
+
+        return analysis;
     }
-
-    //API endpoint to read the contents of a file given a filename as a parameter.
-    @GetMapping("/api/writeFile")
-    public void writeFile(@RequestParam String fileName, @RequestParam String location, @RequestParam String fileContents) {
-        Secure.writeFile(fileName, location,  fileContents);
-    }
-
-    // API endpoint to just encrypt a file's contents given a key
-
-    @GetMapping("/api/encryptFile")
-    public String encryptFile(@RequestParam String fileName, @RequestParam int key) {
-        return Secure.encryptFile(fileName, key);
-    }
-
-    // API endpoint to just decrypt a file's contents given a key
-    @GetMapping("/api/decryptFile")
-    public String decryptFile(@RequestParam String fileName, @RequestParam int key) {
-        return Secure.decryptFile(fileName, key);
-    }
-
 
 }
 
